@@ -5,6 +5,9 @@
 #    source groups and library command)
 #
 cmake_minimum_required( VERSION 2.6 )
+
+add_definitions( "/W3 /D_CRT_SECURE_NO_WARNINGS /wd4005 /wd4996 /wd4477 /wd4267 /wd4244 /nologo" ) 
+
 SET( HEADER_PATH ../include/assimp )
 
 SET( COMPILER_HEADERS
@@ -740,6 +743,15 @@ IF (ASSIMP_BUILD_NONFREE_C4D_IMPORTER)
   TARGET_LINK_LIBRARIES(assimp debug ${C4D_DEBUG_LIBRARY})
   TARGET_LINK_LIBRARIES(assimp ${C4D_EXTRA_LIBRARIES})
 ENDIF (ASSIMP_BUILD_NONFREE_C4D_IMPORTER)
+
+set(CompilerFlags
+      CMAKE_CXX_FLAGS CMAKE_CXX_FLAGS_DEBUG CMAKE_CXX_FLAGS_RELEASE
+      CMAKE_CXX_FLAGS_MINSIZEREL CMAKE_CXX_FLAGS_RELWITHDEBINFO
+      CMAKE_C_FLAGS CMAKE_C_FLAGS_DEBUG CMAKE_C_FLAGS_RELEASE
+      CMAKE_C_FLAGS_MINSIZEREL CMAKE_C_FLAGS_RELWITHDEBINFO)
+foreach(CompilerFlag ${CompilerFlags})
+  string(REPLACE "/MD" "/MT" ${CompilerFlag} "${${CompilerFlag}}")
+endforeach()
 
 if( MSVC )
   # in order to prevent DLL hell, each of the DLLs have to be suffixed with the major version and msvc prefix

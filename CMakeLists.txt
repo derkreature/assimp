@@ -2,9 +2,9 @@ set(CMAKE_LEGACY_CYGWIN_WIN32 0) # Remove when CMake >= 2.8.4 is required
 cmake_minimum_required( VERSION 2.8 )
 PROJECT( Assimp )
 
-option(BUILD_SHARED_LIBS "Build package with shared libraries." ON)
+option(BUILD_SHARED_LIBS "Build package with shared libraries." OFF)
 if(NOT BUILD_SHARED_LIBS)
-  #set(CMAKE_EXE_LINKER_FLAGS "-static")
+  set(CMAKE_EXE_LINKER_FLAGS "-static")
   set(LINK_SEARCH_START_STATIC TRUE)
 endif(NOT BUILD_SHARED_LIBS)
 
@@ -17,6 +17,8 @@ set (ASSIMP_SOVERSION 3)
 set (PROJECT_VERSION "${ASSIMP_VERSION}")
 
 set(ASSIMP_PACKAGE_VERSION "0" CACHE STRING "the package-specific version used for uploading the sources")
+
+add_definitions( "/W3 /D_CRT_SECURE_NO_WARNINGS /wd4005 /wd4996 /wd4477 /wd4267 /wd4244 /nologo" ) 
 
 # Needed for openddl_parser config, no use of c++11 at this moment
 add_definitions( -DOPENDDL_NO_USE_CPP11 )
@@ -154,23 +156,9 @@ if( CMAKE_COMPILER_IS_GNUCXX )
   set(LIBSTDC++_LIBRARIES -lstdc++)
 endif( CMAKE_COMPILER_IS_GNUCXX )
 
-# Search for external dependencies, and build them from source if not found
-# Search for zlib
-find_package(ZLIB)
-if( NOT ZLIB_FOUND )
-  message(STATUS "compiling zlib from souces")
-  include(CheckIncludeFile)
-  include(CheckTypeSize)
-  include(CheckFunctionExists)
-  # compile from sources
-  add_subdirectory(contrib/zlib)
-  set(ZLIB_FOUND 1)
-  set(ZLIB_LIBRARIES zlibstatic)
-  set(ZLIB_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/contrib/zlib ${CMAKE_CURRENT_BINARY_DIR}/contrib/zlib)
-else(NOT ZLIB_FOUND)
-  ADD_DEFINITIONS(-DASSIMP_BUILD_NO_OWN_ZLIB)
-  set(ZLIB_LIBRARIES_LINKED -lz)
-endif(NOT ZLIB_FOUND)
+# Explicitly set the zlib external directory.
+set(ZLIB_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../zlib/include)
+
 INCLUDE_DIRECTORIES(${ZLIB_INCLUDE_DIR})
 
 # Search for unzip
@@ -287,6 +275,9 @@ IF(MSVC)
     ON
   )
 ENDIF(MSVC)
+
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd")
 
 # Generate a pkg-config .pc for the Assimp library.
 CONFIGURE_FILE( "${PROJECT_SOURCE_DIR}/assimp.pc.in" "${PROJECT_BINARY_DIR}/assimp.pc" @ONLY )
