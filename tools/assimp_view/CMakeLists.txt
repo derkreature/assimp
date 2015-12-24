@@ -11,38 +11,6 @@ INCLUDE_DIRECTORIES (
 # Make sure the linker can find the Assimp library once it is built.
 LINK_DIRECTORIES (${Assimp_BINARY_DIR} ${AssetImporter_BINARY_DIR}/lib)
 
-ADD_EXECUTABLE(  assimp_viewer WIN32
-  AnimEvaluator.cpp
-  Background.cpp
-  Display.cpp
-  HelpDialog.cpp
-  Input.cpp
-  LogDisplay.cpp
-  LogWindow.cpp
-  Material.cpp
-  MeshRenderer.cpp
-  MessageProc.cpp
-  Normals.cpp
-  SceneAnimator.cpp
-  Shaders.cpp
-  assimp_view.cpp
-  stdafx.cpp
-  assimp_view.rc
-  banner.bmp
-  banner_pure.bmp
-  base_anim.bmp
-  base_display.bmp
-  base_inter.bmp
-  base_rendering.bmp
-  base_stats.bmp
-  fx.bmp
-  n.bmp
-  root.bmp
-  tx.bmp
-  txi.bmp
-)
-
-SET_PROPERTY(TARGET assimp_viewer PROPERTY DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX})
 
 
 IF ( MSVC )

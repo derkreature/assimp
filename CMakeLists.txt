@@ -241,12 +241,6 @@ option ( ASSIMP_BUILD_ASSIMP_TOOLS
   "If the supplementary tools for Assimp are built in addition to the library."
   ON
 )
-IF ( ASSIMP_BUILD_ASSIMP_TOOLS )
-  IF ( WIN32 AND DirectX_FOUND )
-    ADD_SUBDIRECTORY( tools/assimp_view/ )
-  ENDIF ( WIN32 AND DirectX_FOUND )
-  ADD_SUBDIRECTORY( tools/assimp_cmd/ )
-ENDIF ( ASSIMP_BUILD_ASSIMP_TOOLS )
 
 option ( ASSIMP_BUILD_SAMPLES
   "If the official samples are built as well (needs Glut)."
@@ -297,7 +291,6 @@ if(CMAKE_CPACK_COMMAND AND UNIX AND ASSIMP_OPT_BUILD_PACKAGES)
   set(CPACK_PACKAGE_INSTALL_DIRECTORY       "assimp${ASSIMP_VERSION_MAJOR}.${ASSIMP_VERSION_MINOR}")
   set(CPACK_RESOURCE_FILE_LICENSE           "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
 
-  string(TOUPPER ${LIBASSIMP_COMPONENT}     "LIBASSIMP_COMPONENT_UPPER")
   string(TOUPPER ${LIBASSIMP-DEV_COMPONENT} "LIBASSIMP-DEV_COMPONENT_UPPER")
 
   set(CPACK_COMPONENT_ASSIMP-BIN_DISPLAY_NAME                       "tools")
