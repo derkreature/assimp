@@ -259,10 +259,6 @@ option ( ASSIMP_BUILD_TESTS
   ON
 )
 
-IF ( ASSIMP_BUILD_TESTS )
-  ADD_SUBDIRECTORY( test/ )
-ENDIF ( ASSIMP_BUILD_TESTS )
-
 IF(MSVC)
   option ( ASSIMP_INSTALL_PDB
     "Install MSVC debug files."
